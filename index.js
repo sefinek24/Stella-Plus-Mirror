@@ -16,6 +16,7 @@ app.use(helmet({ crossOriginEmbedderPolicy: false, crossOriginResourcePolicy: fa
 // Routes
 app.use(Index);
 
+
 // Run server
 app.listen(process.env.PORT, () => {
 	if (process.env.NODE_ENV === 'production') {
