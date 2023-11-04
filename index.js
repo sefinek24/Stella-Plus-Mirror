@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const Index = require('./routes/Index.js');
 
 // Create express app
 const app = express();
@@ -12,6 +13,8 @@ app.use(cors());
 app.use(helmet({ crossOriginEmbedderPolicy: false, crossOriginResourcePolicy: false, contentSecurityPolicy: false }));
 
 
+// Routes
+app.use(Index);
 
 // Run server
 app.listen(process.env.PORT, () => {
