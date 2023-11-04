@@ -5,12 +5,16 @@ module.exports = {
 	'env': {
 		'node': true,
 		'es2023': true,
+		'browser': true,
+		'mongo': true,
 	},
 	'parserOptions': {
 		'ecmaVersion': 2023,
 	},
+	'ignorePatterns': ['public/static/js/bootstrap/bootstrap.bundle.min.js'],
 	'rules': {
 		'arrow-spacing': ['warn', { 'before': true, 'after': true }],
+		// 'brace-style': ['warn', 'stroustrup', { 'allowSingleLine': true }],
 		'comma-dangle': ['error', 'always-multiline'],
 		'comma-spacing': 'error',
 		'comma-style': 'error',
@@ -24,6 +28,7 @@ module.exports = {
 		'no-console': 'off',
 		'no-empty-function': 'error',
 		'no-floating-decimal': 'error',
+		// 'no-inline-comments': 'error',
 		'no-lonely-if': 'error',
 		'no-multi-spaces': 'warn',
 		'no-multiple-empty-lines': ['warn', { 'max': 4, 'maxEOF': 1, 'maxBOF': 0 }],
