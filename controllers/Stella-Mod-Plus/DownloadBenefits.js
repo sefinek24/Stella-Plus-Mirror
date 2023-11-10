@@ -1,22 +1,30 @@
 const path = require('node:path');
 const fs = require('node:fs');
+const { validationResult } = require('express-validator');
 const DeviceInfo = require('../../database/models/DeviceInfo.js');
 const SubscriptionInfo = require('../../database/models/SubscriptionInfo.js');
 
-const benefitsDir = path.join(__dirname, '..', '..', '..', 'cdn.sefinek.net', 'submodule', 'Stella-Mod-Resources', 'patrons');
+const benefitsDir = process.env.NODE_ENV === 'production' ? path.join(__dirname, '..', '..', '..', 'cdn.sefinek.net', 'submodule', 'Stella-Mod-Resources', 'patrons') : process.env.RESOURCES_PATH;
 
 module.exports.download = async (req, res) => {
-	const user = req.user;
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) return res.status(400).json(errors.array());
+
 	const webToken = req.params.key;
 	const db = await DeviceInfo.findOne({ devices: { $elemMatch: { 'secret.webToken': webToken } } });
+	if (!db) return res.status(400).send('Device was not found.');
 
 	const device = db.devices.find(doc => doc.secret.webToken === webToken);
 	if (!device.status.active) res.status(400).send('This url is not active.');
+
+	const user = req.user;
 	if (!device.status.verified || !device.status.captcha) return res.status(307).redirect(`${process.env.PATRONS}/benefits/genshin-impact-reshade/receive/${user.id}/${device.secret.webToken}/captcha`);
 	if (device.status.expired) return res.status(400).send('Url expired.');
 	if (device.status.received) return res.status(400).send('Benefits was received.');
 
 	const subsInfo = await SubscriptionInfo.findOne({ userId: db.userId });
+	if (!subsInfo) return res.status(400).send('Subscription data was not found.');
+
 	const userMirror = subsInfo.mirror.selectedServer.toString();
 	if (userMirror !== process.env.MIRROR_ID) return res.send(`Its not mirror ${process.env.MIRROR_ID}!`);
 

@@ -6,7 +6,7 @@ const helmet = require('helmet');
 const timeout = require('./middlewares/timeout.js');
 const logger = require('./middlewares/morgan.js');
 const Index = require('./routes/Index.js');
-
+const Stella = require('./routes/Stella.js');
 
 // MongoDB
 require('./database/mongoose.js');
@@ -21,8 +21,10 @@ app.use(timeout());
 app.use(express.static('public/static'));
 app.use(logger);
 
+
 // Routes
 app.use(Index);
+app.use(Stella);
 
 
 // Run server
