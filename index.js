@@ -39,7 +39,7 @@ app.listen(process.env.PORT, () => {
 		} catch (err) {
 			// . . .
 		}
-	} else {
-		console.log(`Mirror #${process.env.MIRROR_ID} is running on http://127.0.0.1:${process.env.PORT}`);
 	}
+
+	console.log(`Mirror #${process.env.MIRROR_ID} is running on http://127.0.0.1:${process.env.PORT}`);
 });
