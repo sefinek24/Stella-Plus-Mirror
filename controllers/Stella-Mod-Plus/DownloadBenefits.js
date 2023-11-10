@@ -9,14 +9,14 @@ module.exports.download = async (req, res) => {
 	const user = req.user;
 	const webToken = req.params.key;
 	const db = await DeviceInfo.findOne({ devices: { $elemMatch: { 'secret.webToken': webToken } } });
-	const subsInfo = await SubscriptionInfo.findOne({ userId: db.userId });
+
 	const device = db.devices.find(doc => doc.secret.webToken === webToken);
+	if (!device.status.active) res.status(400).send('This url is not active.');
+	if (!device.status.verified || !device.status.captcha) return res.status(307).redirect(`${process.env.PATRONS}/benefits/genshin-impact-reshade/receive/${user.id}/${device.secret.webToken}/captcha`);
+	if (device.status.expired) return res.status(400).send('Url expired.');
+	if (device.status.received) return res.status(400).send('Benefits was received.');
 
-	if (!device.status.active) return res.status(400).render('benefits/stella-mod-plus/received.ejs', { user, dir2Param: null, error: 'This url is not active rn.' });
-	if (!device.status.verified || !device.status.captcha) return res.status(307).redirect(`/benefits/genshin-impact-reshade/receive/${user.id}/${device.secret.webToken}/captcha`);
-	if (device.status.expired) return res.status(400).render('benefits/stella-mod-plus/received.ejs', { user, dir2Param: null, error: 'Url expired.' });
-	if (device.status.received) return res.status(400).render('benefits/stella-mod-plus/received.ejs', { user, dir2Param: null, date: db.lastBenefitReceivedAt });
-
+	const subsInfo = await SubscriptionInfo.findOne({ userId: db.userId });
 	const userMirror = subsInfo.mirror.selectedServer.toString();
 	if (userMirror !== process.env.MIRROR_ID) return res.send(`Its not mirror ${process.env.MIRROR_ID}!`);
 
