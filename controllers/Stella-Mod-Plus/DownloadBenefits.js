@@ -17,8 +17,8 @@ module.exports.download = async (req, res) => {
 	if (device.status.expired) return res.status(400).render('benefits/stella-mod-plus/received.ejs', { user, dir2Param: null, error: 'Url expired.' });
 	if (device.status.received) return res.status(400).render('benefits/stella-mod-plus/received.ejs', { user, dir2Param: null, date: db.lastBenefitReceivedAt });
 
-	const userMirror = subsInfo.mirror.selectedServer;
-	if (userMirror !== 0) return res.send('Its not mirror 0!');
+	const userMirror = subsInfo.mirror.selectedServer.toString();
+	if (userMirror !== process.env.MIRROR_ID) return res.send(`Its not mirror ${process.env.MIRROR_ID}!`);
 
 	let zipPath;
 	switch (db.benefitId) {
