@@ -4,7 +4,7 @@ const { validationResult } = require('express-validator');
 const DeviceInfo = require('../../database/models/DeviceInfo.js');
 const SubscriptionInfo = require('../../database/models/SubscriptionInfo.js');
 
-const benefitsDir = process.env.NODE_ENV === 'production' ? path.join(__dirname, '..', '..', '..', 'cdn.sefinek.net', 'submodule', 'Stella-Mod-Resources', 'patrons') : process.env.RESOURCES_PATH;
+const benefitsDir = process.env.NODE_ENV === 'production' ? process.env.RESOURCES_PATH : path.join(__dirname, '..', '..', '..', 'cdn.sefinek.net', 'submodule', 'Stella-Mod-Resources', 'patrons');
 
 module.exports.download = async (req, res) => {
 	const errors = validationResult(req);
