@@ -15,6 +15,9 @@ require('./database/mongoose.js');
 // Create express app
 const app = express();
 
+// Proxy
+app.set('trust proxy', 1);
+
 // Middlewares
 app.use(cors());
 app.use(helmet());
