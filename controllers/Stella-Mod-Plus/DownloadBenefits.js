@@ -19,14 +19,15 @@ module.exports.download = async (req, res) => {
 
 	const user = req.user;
 	if (!device.status.verified || !device.status.captcha) return res.status(307).redirect(`${process.env.PATRONS}/benefits/genshin-impact-reshade/receive/${user.id}/${device.secret.webToken}/captcha`);
-	if (device.status.expired) return res.status(400).send('Url expired.');
+	if (device.status.expired) return res.status(410).send('Url expired.');
 	if (device.status.received) return res.status(400).send('Benefits was received.');
 
 	const subsInfo = await SubscriptionInfo.findOne({ userId: db.userId });
-	if (!subsInfo) return res.status(400).send('Subscription data was not found.');
+	if (!subsInfo) return res.status(405).send('Subscription data was not found.');
+	if (!subsInfo.isActive) return res.status(402).send('Your subscription is not active.');
 
 	const userMirror = subsInfo.mirror.selectedServer.toString();
-	if (userMirror !== process.env.MIRROR_ID) return res.send(`Its not mirror ${process.env.MIRROR_ID}!`);
+	if (userMirror !== process.env.MIRROR_ID) return res.status(400).send(`Its not mirror ${process.env.MIRROR_ID}!`);
 
 	let zipPath;
 	switch (db.benefitId) {
