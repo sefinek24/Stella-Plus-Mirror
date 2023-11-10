@@ -17,9 +17,8 @@ const app = express();
 
 // Middlewares
 app.use(cors());
-app.use(helmet({ crossOriginEmbedderPolicy: false, crossOriginResourcePolicy: false, contentSecurityPolicy: false }));
+app.use(helmet());
 app.use(timeout());
-app.use(express.static('public/static'));
 app.use(logger);
 
 
