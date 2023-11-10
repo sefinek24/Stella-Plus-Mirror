@@ -5,6 +5,9 @@ const cors = require('cors');
 const helmet = require('helmet');
 const Index = require('./routes/Index.js');
 
+// MongoDB
+require('./database/mongoose.js');
+
 // Create express app
 const app = express();
 
