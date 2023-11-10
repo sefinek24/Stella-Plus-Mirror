@@ -5,6 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const timeout = require('./middlewares/timeout.js');
 const logger = require('./middlewares/morgan.js');
+const SpeedTest = require('./routes/SpeedTest.js');
 const Index = require('./routes/Index.js');
 const Stella = require('./routes/Stella.js');
 
@@ -23,6 +24,7 @@ app.use(logger);
 
 
 // Routes
+app.use(SpeedTest);
 app.use(Index);
 app.use(Stella);
 
