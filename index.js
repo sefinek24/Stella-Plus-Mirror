@@ -31,7 +31,7 @@ app.use(Index);
 app.use(Stella);
 
 
-// Run server
+// Run the server
 app.listen(process.env.PORT, () => {
 	if (process.env.NODE_ENV === 'production') {
 		try {
@@ -40,6 +40,6 @@ app.listen(process.env.PORT, () => {
 			// . . .
 		}
 	} else {
-		console.log(`Website https://patrons.sefinek.net is running on http://127.0.0.1:${process.env.PORT}`);
+		console.log(`Mirror #${process.env.MIRROR_ID} is running on http://127.0.0.1:${process.env.PORT}`);
 	}
 });
