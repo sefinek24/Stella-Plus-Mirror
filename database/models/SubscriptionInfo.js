@@ -50,7 +50,6 @@ const SubscriptionInfoSchema = new Schema({
 	},
 	stripe: {
 		type: Object,
-		required: false,
 
 		customerId: {
 			type: String,
@@ -83,7 +82,6 @@ const SubscriptionInfoSchema = new Schema({
 	},
 	google: {
 		type: Object,
-		required: false,
 		username: {
 			type: String,
 			required: true,
@@ -91,7 +89,6 @@ const SubscriptionInfoSchema = new Schema({
 	},
 	discord: {
 		type: Object,
-		required: false,
 		discordUserId: {
 			type: String,
 			required: true,
@@ -109,19 +106,16 @@ const SubscriptionInfoSchema = new Schema({
 		},
 		global_name: {
 			type: String,
-			required: false,
 		},
 	},
 	mirror: {
 		type: Object,
-		required: false,
-		default: {},
-		selectedServer: { type: Number, required: true },
-		previousServer: { type: Number, required: true },
+		default: { selectedServer: 1, previousServer: null },
+		selectedServer: { type: Number, default: 1, required: true },
+		previousServer: { type: Number, default: null, required: true },
 	},
 	mails: {
 		type: [MailHistorySchema],
-		required: false,
 		default: [],
 	},
 }, { versionKey: false });
