@@ -28,6 +28,7 @@ const SubscriptionInfoSchema = new Schema({
 	subscriptionType: {
 		type: String,
 		required: true,
+		default: 'stripe',
 		enum: ['patreon', 'stripe'],
 	},
 	discordAccountConnected: { type: Boolean },
