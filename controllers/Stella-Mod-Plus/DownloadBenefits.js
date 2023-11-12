@@ -32,7 +32,7 @@ module.exports.download = async (req, res) => {
 		// Check the mirror
 		if (!subsInfo.mirror) throw { status: 500, message: 'Mirror data was not found.' };
 		const userMirror = subsInfo.mirror.selectedServer.toString();
-		if (userMirror !== process.env.MIRROR_ID) throw { status: 400, message: `It's not mirror ${process.env.MIRROR_ID}!` };
+		if (userMirror !== process.env.MIRROR_ID) throw { status: 400, message: `The customer directed themselves to the incorrect mirror #${process.env.MIRROR_ID}! Your download server has the identifier #${userMirror}.` };
 
 		// Get the zip path
 		const zipPath = determineZipPath(db.benefitId);
