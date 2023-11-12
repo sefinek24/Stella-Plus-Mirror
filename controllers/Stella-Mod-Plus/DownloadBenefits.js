@@ -30,6 +30,7 @@ module.exports.download = async (req, res) => {
 		if (!subsInfo.isActive) throw { status: 402, message: 'Subscription is not active.' };
 
 		// Check the mirror
+		if (!subsInfo.mirror) throw { status: 500, message: 'Mirror data was not found.' };
 		const userMirror = subsInfo.mirror.selectedServer.toString();
 		if (userMirror !== process.env.MIRROR_ID) throw { status: 400, message: `It's not mirror ${process.env.MIRROR_ID}!` };
 
