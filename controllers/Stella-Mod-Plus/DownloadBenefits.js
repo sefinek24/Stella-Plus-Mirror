@@ -17,13 +17,13 @@ module.exports.download = async (req, res) => {
 		if (!db) throw { status: 400, message: 'Device was not found.' };
 
 		const device = db.devices.find(doc => doc.secret.webToken === webToken);
-		if (!device.status.active) throw { status: 400, message: 'This link is no longer active.' };
+		if (!device.status.active) throw { status: 403, message: 'This link is no longer active.' };
 
 		const userId = req.params.userId;
 		if (!userId) throw { status: 400, message: 'User ID is invalid.' };
 		if (!device.status.verified || !device.status.captcha) return res.status(307).redirect(`${process.env.PATRONS}/benefits/stella-mod-plus/receive/${userId}/${device.secret.webToken}/captcha`);
 		if (device.status.expired) throw { status: 410, message: 'This URL has expired and will never be active again.' };
-		if (device.status.received) throw { status: 400, message: 'Benefits were received.' };
+		if (device.status.received) throw { status: 403, message: 'Benefits were received.' };
 
 		const subsInfo = await SubscriptionInfo.findOne({ userId });
 		if (!subsInfo) throw { status: 405, message: 'Subscription data was not found.' };
