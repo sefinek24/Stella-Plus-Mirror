@@ -1,37 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const ProjectInfo = new Schema({
-	website: { type: String, default: 'sefinek.net', required: true, index: true, unique: true },
-	me: {
-		github: { type: String, default: '', unique: true },
-		gravatar: { type: String, default: '', unique: true },
-		discordId: { type: String, default: '', unique: true },
-		twitter: { type: String, default: '', unique: true },
-		instagram: { type: String, default: '', unique: true },
-		line: { type: String, default: '', unique: true },
-	},
-
-	maintenance: {
-		global: { type: Boolean, default: false },
-		stella: { type: Boolean, default: false },
-		allowOnly: { type: Array, default: ['::ffff:127.0.0.1'] },
-	},
-
 	stella: {
-		downloads: {
-			count: { type: Number, default: 0, validate: { validator: Number.isInteger, message: 'Count must be an integer' } },
-			last: { type: Date, default: Date.now() },
-			url: { type: String, default: 'https://github.com/sefinek24/Genshin-Impact-ReShade/releases/latest/download/Stella-Mod-Setup.exe' },
-		},
-
-		bans: { type: Array, default: [] },
-
-		// Launcher
-		launcher: {
-			allow: { type: Boolean, default: true },
-			reason: { type: String, default: '' },
-		},
-
 		// Stella versions
 		versions: {
 			launcher: {
@@ -88,25 +58,6 @@ const ProjectInfo = new Schema({
 			},
 
 			mirrorId: { type: Number, default: 1 },
-		},
-
-		// Update page
-		updates: {
-			url: { type: String, default: 'https://github.com/sefinek24/Genshin-Impact-ReShade/releases/latest/download/Stella-Mod-Setup.exe' },
-			changelog: { type: String, default: 'https://github.com/sefinek24/Genshin-Impact-ReShade/wiki/14.-Changelog-for-v7.x.x' },
-			allow: { type: Boolean, default: true },
-		},
-
-		// 0 = Null / 1 = All players / 2 = Only for patrons
-		news: {
-			webview: {
-				url: { type: String, default: 'https://sefinek.net/genshin-stella-mod/webview/example' },
-				for: { type: Number, default: 0 },
-			},
-			messagebox: {
-				text: { type: String, default: 'Hello world!' },
-				for: { type: Number, default: 1 },
-			},
 		},
 	},
 }, {

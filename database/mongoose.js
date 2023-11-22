@@ -1,9 +1,13 @@
-const { connect, connection } = require('mongoose');
+const mongoose = require('mongoose');
 
-connect(process.env.MONGODB_URL);
+mongoose.connect(process.env.MONGODB_URL).then(() => {
+	console.info('Connected to the database');
+}).catch(err => {
+	console.error('Failed to connect to the database', err);
+	process.exit(1);
+});
 
-connection.on('open', () => console.log('Successfully connected to the database'));
-connection.on('close', () => console.log('Connection to the database has been closed'));
-connection.on('reconnected', () => console.log('Successfully reconnected to the database'));
-connection.on('disconnected', () => console.log('------------------------------ Lost connection with the database ------------------------------'));
-connection.on('error', err => console.error('An error occurred with the database!', err));
+const db = mongoose.connection;
+db.on('connected', () => console.info('MongoDB connected successfully!'));
+db.on('disconnected', () => console.warn('MongoDB disconnected!'));
+db.on('error', err => console.error('MongoDB connection error:', err));

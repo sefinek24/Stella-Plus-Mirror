@@ -11,21 +11,6 @@ const DeviceSchema = new Schema({
 		received: { type: Boolean, default: false },
 		expired: { type: Boolean, default: false },
 	},
-	user: {
-		request: {
-			ip: { type: String, default: null },
-			geo: { type: Object, default: {} },
-			headers: { type: Object, default: {} },
-		},
-		pc: {
-			fullComputerName: { type: String, default: null },
-			region: { type: String, default: null },
-			MACAddress: { type: String, default: null },
-			motherboardId: { type: String, default: null },
-			cpuId: { type: String, default: null },
-			diskId: { type: String, default: null },
-		},
-	},
 	secret: {
 		webToken: {
 			type: String,
@@ -38,21 +23,7 @@ const DeviceSchema = new Schema({
 				message: 'Wrong webToken length',
 			},
 		},
-		backupKey: {
-			type: String,
-			unique: true,
-			sparse: true,
-			validate: {
-				validator: value => value.length === 96,
-				message: 'Wrong backupKey length',
-			},
-		},
 		accessToken: {
-			type: String,
-			unique: true,
-			sparse: true,
-		},
-		computerKey: {
 			type: String,
 			unique: true,
 			sparse: true,
@@ -79,7 +50,6 @@ const MainSchema = new Schema({
 			message: '{VALUE} is not an integer',
 		},
 	},
-	lastBenefitReceivedAt: { type: Date, default: null },
 	devices: {
 		type: [DeviceSchema],
 		default: [],

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { param } = require('express-validator');
-const DownloadBenefitsController = require('../controllers/Stella-Mod-Plus/DownloadBenefits.js');
+const DownloadBenefitsController = require('../controllers/Patron-Center/DownloadBenefits.js');
 
 router.get('/benefits/stella-mod-plus/receive/:userId/:key/download', [
 	param('userId')

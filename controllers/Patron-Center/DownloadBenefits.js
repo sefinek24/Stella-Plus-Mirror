@@ -2,8 +2,10 @@ const fs = require('node:fs');
 const { validationResult } = require('express-validator');
 const sendResult = require('./scripts/sendResult.js');
 const determineZipPath = require('./scripts/determineZipPath.js');
-const DeviceInfo = require('../../database/models/DeviceInfo.js');
-const SubscriptionInfo = require('../../database/models/SubscriptionInfo.js');
+const DeviceInfo = require('../../database/models/DeviceInfo');
+const SubscriptionInfo = require('../../database/models/SubscriptionInfo');
+
+const prefix = '[DownloadBenefits]:';
 
 module.exports.download = async (req, res) => {
 	try {
@@ -21,7 +23,7 @@ module.exports.download = async (req, res) => {
 
 		const userId = req.params.userId;
 		if (!userId) throw { status: 400, message: 'User ID is invalid.' };
-		if (!device.status.verified || !device.status.captcha) return res.status(307).redirect(`${process.env.PATRONS}/benefits/stella-mod-plus/receive/${userId}/${device.secret.webToken}/captcha`);
+		if (!device.status.verified || !device.status.captcha) return res.status(307).redirect(`${process.env.PATRON_CENTER}/benefits/stella-mod-plus/receive/${userId}/${device.secret.webToken}/captcha`);
 		if (device.status.expired) throw { status: 410, message: 'This URL has expired and will never be active again.' };
 		if (device.status.received) throw { status: 403, message: 'Benefits were received.' };
 
@@ -50,9 +52,9 @@ module.exports.download = async (req, res) => {
 		res.download(zipPath);
 
 		// Final
-		console.log(`Successfully served zip file for ${subsInfo.email}!`);
+		console.log(prefix, `Successfully served zip file for ${subsInfo.email}`);
 	} catch (err) {
-		console.error('Failed to process download request.', err);
-		sendResult(res, { status: err.status || 500, message: err.message || 'Internal Server Error' });
+		console.error(prefix, 'Failed to process download request.', err);
+		sendResult(res, { status: err.status || 500, message: err.message || 'Internal server error' });
 	}
 };
