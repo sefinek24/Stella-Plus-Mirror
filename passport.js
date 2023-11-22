@@ -3,7 +3,12 @@ const BearerStrategy = require('passport-http-bearer').Strategy;
 const jwt = require('jsonwebtoken');
 
 const verifyToken = async (token, req, done) => {
-	if (!token) return done(null, false, { message: 'Token missing' });
+	if (!token) {
+		const message = 'Missing token.';
+		console.warn(message);
+
+		return done(null, false, { message });
+	}
 
 	try {
 		const decoded = jwt.verify(token, process.env.SML_JWT_SECRET);
