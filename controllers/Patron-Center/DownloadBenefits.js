@@ -37,8 +37,8 @@ module.exports.download = async (req, res) => {
 		if (userMirror !== process.env.MIRROR_ID) throw { status: 400, message: `The customer directed themselves to the incorrect mirror #${process.env.MIRROR_ID}! Your download server has the identifier #${userMirror}.` };
 
 		// Get the zip path
-		const zipPath = determineZipPath(db.benefitId);
-		if (!zipPath) throw { status: 500, message: 'Unknown zip path.' };
+		const zipPath = determineZipPath(subsInfo.benefitId);
+		if (!zipPath) throw { status: 500, message: `Unknown zip path for ${subsInfo.benefitId}` };
 		if (!fs.existsSync(zipPath)) throw { status: 500, message: 'File doesn\'t exist. Please report this error.' };
 
 		// Update the database
