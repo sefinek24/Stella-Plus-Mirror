@@ -40,16 +40,10 @@ const DeviceSchema = new Schema({
 	},
 });
 
-const MainSchema = new Schema({
+const StellaPlusDevices = new Schema({
 	userId: { type: String, required: true, unique: true, index: true },
-	benefitId: {
-		type: Number,
-		required: true,
-		validate: {
-			validator: Number.isInteger,
-			message: '{VALUE} is not an integer',
-		},
-	},
+	username: { type: String, required: true },
+	lastBenefitReceivedAt: { type: Date, default: null },
 	devices: {
 		type: [DeviceSchema],
 		default: [],
@@ -60,4 +54,4 @@ const MainSchema = new Schema({
 	},
 }, { versionKey: false });
 
-module.exports = model('sm_benefits', MainSchema);
+module.exports = model('sm_devices', StellaPlusDevices);

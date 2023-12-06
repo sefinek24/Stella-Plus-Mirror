@@ -7,7 +7,7 @@ const benefitsDir = process.env.NODE_ENV === 'production'
 	: path.join(process.env.RESOURCES_LOCAL, 'benefits');
 
 module.exports = async (req, res) => {
-	const { error, subscriptionData } = await getSubscriberLauncher(req, res);
+	const { error, subsData } = await getSubscriberLauncher(req, res);
 	if (error) return;
 
 	const { benefitType } = req.query;
@@ -16,10 +16,10 @@ module.exports = async (req, res) => {
 	}
 
 	const thisMirrorId = parseInt(process.env.MIRROR_ID, 10);
-	const userMirrorId = parseInt(subscriptionData.mirror.selectedServer, 10);
+	const userMirrorId = parseInt(subsData.mirror.selectedServer, 10);
 	if (thisMirrorId !== userMirrorId) return sendValidationResult(req, res, { status: 400, type: 'dn', app: 'launcher-mirr', deleteBenefits: false, deleteTokens: false, message: `Wrong mirror my friend. This: ${thisMirrorId}; Your: ${userMirrorId}` });
 
-	if ([2].includes(subscriptionData.benefitId)) {
+	if ([2].includes(subsData.benefitId)) {
 		switch (benefitType) {
 		case '3dmigoto-mods': return res.sendFile(benefitsDir + '/2/3DMigoto Mods.zip');
 		case '3dmigoto': return res.sendFile(benefitsDir + '/3DMigoto.zip');
@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
 		}
 	}
 
-	if ([3, 4, 5].includes(subscriptionData.benefitId)) {
+	if ([3, 4, 5].includes(subsData.benefitId)) {
 		switch (benefitType) {
 		case '3dmigoto-mods': return res.sendFile(benefitsDir + '/3/3DMigoto Mods.zip');
 		case '3dmigoto': return res.sendFile(benefitsDir + '/3DMigoto.zip');

@@ -1,4 +1,4 @@
-const DeviceInfo = require('../../../../database/models/DeviceInfo.js');
+const StellaDevices = require('../../../../database/models/StellaDevices.js');
 
 const prefix = '[sendValidationResult]:';
 
@@ -16,7 +16,7 @@ const removeTokens = async deviceDb => {
 	}
 
 	try {
-		const db = await DeviceInfo.findOne({ devices: { $elemMatch: { 'secret.webToken': webToken } } });
+		const db = await StellaDevices.findOne({ devices: { $elemMatch: { 'secret.webToken': webToken } } });
 		db.devices.map(doc => {
 			if (doc.secret.webToken === webToken) {
 				doc.status.active = false;

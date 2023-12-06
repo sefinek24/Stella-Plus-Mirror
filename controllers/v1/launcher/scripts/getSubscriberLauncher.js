@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
 		return { error: true };
 	}
 
-	const { deviceInfo, subscriptionData } = await getDocumentByUserId(userId);
+	const { deviceInfo, subsData } = await getDocumentByUserId(userId);
 	if (!deviceInfo) {
 		await sendValidationResult(req, res, { status: 500, type: 'get-subs', app: 'launcher-mirr', deleteBenefits: true, deleteTokens: true, message: 'Database collection was not found.' });
 		return { error: true };
@@ -30,5 +30,5 @@ module.exports = async (req, res) => {
 
 	console.log(`[getSubscriberLauncher]: Found ${deviceInfo.userId} in the database & and successfully decoded the jwt token`);
 
-	return { error: false, deviceInfo, subscriptionData };
+	return { error: false, deviceInfo, subsData };
 };

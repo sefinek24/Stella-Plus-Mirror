@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const SubscriptionInfoSchema = new Schema({
+const StellaSubscriptions = new Schema({
 	userId: { type: String, required: true, unique: true, index: true },
 	email: {
 		type: String,
@@ -42,4 +42,4 @@ const SubscriptionInfoSchema = new Schema({
 	},
 }, { versionKey: false });
 
-module.exports = model('SubscriptionInfo', SubscriptionInfoSchema);
+module.exports = model('sm_subscriptions', StellaSubscriptions);

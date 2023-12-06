@@ -2,8 +2,8 @@ const fs = require('node:fs');
 const { validationResult } = require('express-validator');
 const sendResult = require('./scripts/sendResult.js');
 const determineZipPath = require('./scripts/determineZipPath.js');
-const DeviceInfo = require('../../database/models/DeviceInfo');
-const SubscriptionInfo = require('../../database/models/SubscriptionInfo');
+const StellaDevices = require('../../database/models/StellaDevices');
+const StellaSubscription = require('../../database/models/StellaSubscription');
 
 const prefix = '[DownloadBenefits]:';
 
@@ -15,7 +15,7 @@ module.exports.download = async (req, res) => {
 		const webToken = req.params.key;
 		if (!webToken) throw { status: 400, message: 'Web token is invalid.' };
 
-		const db = await DeviceInfo.findOne({ devices: { $elemMatch: { 'secret.webToken': webToken } } });
+		const db = await StellaDevices.findOne({ devices: { $elemMatch: { 'secret.webToken': webToken } } });
 		if (!db) throw { status: 400, message: 'Device was not found.' };
 
 		const device = db.devices.find(doc => doc.secret.webToken === webToken);
@@ -27,7 +27,7 @@ module.exports.download = async (req, res) => {
 		if (device.status.expired) throw { status: 410, message: 'This URL has expired and will never be active again.' };
 		if (device.status.received) throw { status: 403, message: 'Benefits were received.' };
 
-		const subsInfo = await SubscriptionInfo.findOne({ userId });
+		const subsInfo = await StellaSubscription.findOne({ userId });
 		if (!subsInfo) throw { status: 405, message: 'Subscription data was not found.' };
 		if (!subsInfo.isActive) throw { status: 402, message: 'Subscription is not active.' };
 
