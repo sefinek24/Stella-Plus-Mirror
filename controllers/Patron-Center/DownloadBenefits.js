@@ -38,7 +38,7 @@ module.exports.download = async (req, res) => {
 
 		// Get the zip path
 		const zipPath = determineZipPath(subsInfo.benefitId);
-		if (!zipPath) throw { status: 500, message: `Unknown zip path for ${subsInfo.benefitId}` };
+		if (!zipPath) throw { status: 500, message: `Unknown zip path (${zipPath}) for benefit id ${subsInfo.benefitId}` };
 		if (!fs.existsSync(zipPath)) throw { status: 500, message: 'File doesn\'t exist. Please report this error.' };
 
 		// Update the database
