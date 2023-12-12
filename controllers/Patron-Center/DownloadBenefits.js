@@ -45,6 +45,7 @@ module.exports.download = async (req, res) => {
 		db.lastBenefitReceivedAt = Date.now();
 		const deviceToUpdate = db.devices.find(doc => doc.secret.webToken === webToken);
 		if (deviceToUpdate) deviceToUpdate.status.received = true;
+		deviceToUpdate.generatedKeyAt = Date.now();
 
 		await db.save({ upsert: false, new: false, validateModifiedOnly: true, isNew: false });
 
