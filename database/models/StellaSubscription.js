@@ -17,7 +17,6 @@ const StellaSubscription = new Schema({
 	subscriptionType: {
 		type: String,
 		required: true,
-		default: 'stripe',
 		enum: ['patreon', 'stripe'],
 	},
 	benefitId: {
