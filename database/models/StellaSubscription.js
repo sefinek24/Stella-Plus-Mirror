@@ -40,6 +40,6 @@ const StellaSubscription = new Schema({
 		selectedServer: { type: Number, default: 1, required: true },
 		previousServer: { type: Number, default: null, required: true },
 	},
-}, { versionKey: false });
+}, { versionKey: false, timestamps: true });
 
 module.exports = model('sm_subscriptions', StellaSubscription);

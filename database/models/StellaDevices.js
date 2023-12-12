@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose');
 const DeviceSchema = new Schema({
 	name: { type: String, default: 'My PC', required: true },
 	reasons: { type: Array, default: [] },
-	generatedKeyAt: { type: Date, default: Date.now() },
+	generatedKeyAt: { type: Date },
 	status: {
 		active: { type: Boolean, default: false },
 		captcha: { type: Boolean, default: false },
@@ -38,7 +38,7 @@ const DeviceSchema = new Schema({
 			},
 		},
 	},
-});
+}, { timestamps: true });
 
 const StellaPlusDevices = new Schema({
 	userId: { type: String, required: true, unique: true, index: true },
