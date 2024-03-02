@@ -47,7 +47,7 @@ module.exports.download = async (req, res) => {
 		if (deviceToUpdate) deviceToUpdate.status.received = true;
 		deviceToUpdate.generatedKeyAt = Date.now();
 
-		await db.save({ upsert: false, new: false, validateModifiedOnly: true, isNew: false });
+		await db.save({ validateModifiedOnly: true });
 
 		// Send file
 		res.download(zipPath);
