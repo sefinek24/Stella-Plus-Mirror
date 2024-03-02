@@ -12,12 +12,12 @@ module.exports = async (req, res) => {
 
 	const { benefitType } = req.query;
 	if (!benefitType || typeof benefitType !== 'string') {
-		return sendValidationResult(req, res, { status: 400, type: 'dn', app: 'launcher-mirr', deleteBenefits: false, deleteTokens: false, message: 'Bad request. Missing **benefitType**.' });
+		return sendValidationResult(req, res, { status: 400, type: 'dn', app: 'smp-mirror', deleteBenefits: false, deleteTokens: false, message: 'Bad request. Missing **benefitType**.' });
 	}
 
 	const thisMirrorId = parseInt(process.env.MIRROR_ID, 10);
 	const userMirrorId = parseInt(subsData.mirror.selectedServer, 10);
-	if (thisMirrorId !== userMirrorId) return sendValidationResult(req, res, { status: 400, type: 'dn', app: 'launcher-mirr', deleteBenefits: false, deleteTokens: false, message: `Wrong mirror my friend. This: ${thisMirrorId}; Your: ${userMirrorId}` });
+	if (thisMirrorId !== userMirrorId) return sendValidationResult(req, res, { status: 400, type: 'dn', app: 'smp-mirror', deleteBenefits: false, deleteTokens: false, message: `Wrong mirror my friend. This: ${thisMirrorId}; Your: ${userMirrorId}` });
 
 	if ([2].includes(subsData.benefitId)) {
 		switch (benefitType) {

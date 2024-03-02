@@ -6,25 +6,25 @@ module.exports = async (req, res) => {
 	const authorizationHeader = req.headers.authorization;
 
 	if (!authorizationHeader) {
-		await sendValidationResult(req, res, { status: 500, type: 'get-subs', app: 'launcher-mirr', deleteBenefits: true, deleteTokens: true, message: 'Missing authorization header.' });
+		await sendValidationResult(req, res, { status: 500, type: 'get-subs', app: 'smp-mirror', deleteBenefits: true, deleteTokens: true, message: 'Missing authorization header.' });
 		return { error: true };
 	}
 
 	const decodedToken = jwt.decode(authorizationHeader.substring(7));
 	if (!decodedToken) {
-		await sendValidationResult(req, res, { status: 500, type: 'get-subs', app: 'launcher-mirr', deleteBenefits: true, deleteTokens: true, message: 'The provided token is not valid. It could not be decoded.' });
+		await sendValidationResult(req, res, { status: 500, type: 'get-subs', app: 'smp-mirror', deleteBenefits: true, deleteTokens: true, message: 'The provided token is not valid. It could not be decoded.' });
 		return { error: true };
 	}
 
 	const { userId } = decodedToken;
 	if (!userId || typeof userId !== 'string') {
-		await sendValidationResult(req, res, { status: 500, type: 'get-subs', app: 'launcher-mirr', deleteBenefits: true, deleteTokens: true, message: 'Missing **userId**.' });
+		await sendValidationResult(req, res, { status: 500, type: 'get-subs', app: 'smp-mirror', deleteBenefits: true, deleteTokens: true, message: 'Missing **userId**.' });
 		return { error: true };
 	}
 
 	const { deviceInfo, subsData } = await getDocumentByUserId(userId);
 	if (!deviceInfo) {
-		await sendValidationResult(req, res, { status: 500, type: 'get-subs', app: 'launcher-mirr', deleteBenefits: true, deleteTokens: true, message: 'Database collection was not found.' });
+		await sendValidationResult(req, res, { status: 500, type: 'get-subs', app: 'smp-mirror', deleteBenefits: true, deleteTokens: true, message: 'Database collection was not found.' });
 		return { error: true };
 	}
 
