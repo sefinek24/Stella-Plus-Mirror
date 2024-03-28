@@ -14,11 +14,6 @@ const StellaSubscription = new Schema({
 			'Please fill a valid email address',
 		],
 	},
-	subscriptionType: {
-		type: String,
-		required: true,
-		enum: ['patreon', 'stripe'],
-	},
 	benefitId: {
 		type: Number,
 		required: true,

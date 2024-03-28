@@ -2,7 +2,6 @@ const { Schema, model } = require('mongoose');
 
 const DeviceSchema = new Schema({
 	name: { type: String, default: 'My PC', required: true },
-	reasons: { type: Array, default: [] },
 	generatedKeyAt: { type: Date },
 	status: {
 		active: { type: Boolean, default: false },
@@ -23,11 +22,7 @@ const DeviceSchema = new Schema({
 				message: 'Wrong webToken length',
 			},
 		},
-		accessToken: {
-			type: String,
-			unique: true,
-			sparse: true,
-		},
+		accessToken: { type: String, unique: true, sparse: true },
 		verifyKey: {
 			type: String,
 			unique: true,
@@ -42,7 +37,6 @@ const DeviceSchema = new Schema({
 
 const StellaPlusDevices = new Schema({
 	userId: { type: String, required: true, unique: true, index: true },
-	username: { type: String, required: true },
 	lastBenefitReceivedAt: { type: Date, default: null },
 	devices: {
 		type: [DeviceSchema],
