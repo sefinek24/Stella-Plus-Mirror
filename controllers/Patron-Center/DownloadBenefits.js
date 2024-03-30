@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const { validationResult } = require('express-validator');
 const sendResult = require('./scripts/sendResult.js');
 const determineZipPath = require('./scripts/determineZipPath.js');
-const StellaDevices = require('../../database/models/StellaDevices');
+const StellaPlusDevices = require('../../database/models/StellaPlusDevices');
 const StellaSubscription = require('../../database/models/StellaSubscription');
 
 const prefix = '[DownloadBenefits]:';
@@ -15,7 +15,7 @@ module.exports.download = async (req, res) => {
 		const webToken = req.params.key;
 		if (!webToken) throw { status: 400, message: 'Web token is invalid.' };
 
-		const db = await StellaDevices.findOne({ devices: { $elemMatch: { 'secret.webToken': webToken } } });
+		const db = await StellaPlusDevices.findOne({ devices: { $elemMatch: { 'secret.webToken': webToken } } });
 		if (!db) throw { status: 400, message: 'Device was not found.' };
 
 		const device = db.devices.find(doc => doc.secret.webToken === webToken);

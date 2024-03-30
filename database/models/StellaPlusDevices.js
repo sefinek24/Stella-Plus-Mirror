@@ -48,4 +48,4 @@ const StellaPlusDevices = new Schema({
 	},
 }, { versionKey: false });
 
-module.exports = model('sm_devices', StellaPlusDevices);
+module.exports = model('sm_plus-devices', StellaPlusDevices);
