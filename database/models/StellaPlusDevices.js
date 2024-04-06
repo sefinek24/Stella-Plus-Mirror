@@ -46,6 +46,6 @@ const StellaPlusDevices = new Schema({
 			message: 'Too many devices',
 		},
 	},
-}, { versionKey: false });
+}, { versionKey: false, timestamps: true });
 
 module.exports = model('sm_plus-devices', StellaPlusDevices);
