@@ -22,16 +22,10 @@ const StellaSubscription = new Schema({
 			message: '{VALUE} is not an integer',
 		},
 	},
-	isActive: {
-		type: Boolean,
-		required: true,
-		default: false,
-	},
+	isActive: { type: Boolean, required: true, default: false },
+	subscriptionDate: { type: Date },
 	mirror: {
-		type: Object,
-		default: { selectedServer: 1, previousServer: null },
-
-		selectedServer: { type: Number, default: 1, required: true },
+		selectedServer: { type: Number, default: 0, required: true },
 		previousServer: { type: Number, default: null, required: true },
 	},
 }, { versionKey: false, timestamps: true });
