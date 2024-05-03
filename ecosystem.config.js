@@ -14,9 +14,9 @@ module.exports = {
 		// Logging settings
 		log_date_format: 'HH:mm:ss.SSS DD.MM.YYYY',
 		merge_logs: true,
-		log_file: '/home/ubuntu/logs/www/mirror/combined.log',
-		out_file: '/home/ubuntu/logs/www/mirror/out.log',
-		error_file: '/home/ubuntu/logs/www/mirror/error.log',
+		log_file: '/home/sefinek/logs/www/mirror/combined.log',
+		out_file: '/home/sefinek/logs/www/mirror/out.log',
+		error_file: '/home/sefinek/logs/www/mirror/error.log',
 
 		// Application restart policy
 		wait_ready: true,
