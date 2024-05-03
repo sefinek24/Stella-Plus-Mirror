@@ -3,7 +3,7 @@ const getSubscriberLauncher = require('./scripts/getSubscriberLauncher.js');
 const sendValidationResult = require('./scripts/sendValidationResult.js');
 
 const benefitsDir = process.env.NODE_ENV === 'production'
-	? path.join(process.env.RESOURCES_REMOTE, 'benefits')
+	? path.join(process.env.RESOURCES_REMOTE)
 	: path.join(process.env.RESOURCES_LOCAL, 'benefits');
 
 module.exports = async (req, res) => {
