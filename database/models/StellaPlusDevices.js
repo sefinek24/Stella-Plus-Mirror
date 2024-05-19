@@ -8,7 +8,7 @@ const DeviceSchema = new Schema({
 		captcha: { type: Boolean, default: false },
 		verified: { type: Boolean, default: false },
 		received: { type: Boolean, default: false },
-		expired: { type: Boolean, default: false },
+		expired: { type: Boolean, default: false }
 	},
 	secret: {
 		webToken: {
@@ -19,8 +19,8 @@ const DeviceSchema = new Schema({
 			index: true,
 			validate: {
 				validator: value => value.length === 256,
-				message: 'Wrong webToken length',
-			},
+				message: 'Wrong webToken length'
+			}
 		},
 		accessToken: { type: String, unique: true, sparse: true },
 		verifyKey: {
@@ -29,10 +29,10 @@ const DeviceSchema = new Schema({
 			sparse: true,
 			validate: {
 				validator: value => value.length === 2048,
-				message: 'Wrong verifyKey length',
-			},
-		},
-	},
+				message: 'Wrong verifyKey length'
+			}
+		}
+	}
 }, { timestamps: true });
 
 const StellaPlusDevices = new Schema({
@@ -43,9 +43,9 @@ const StellaPlusDevices = new Schema({
 		default: [],
 		validate: {
 			validator: value => value.length < 3,
-			message: 'Too many devices',
-		},
-	},
+			message: 'Too many devices'
+		}
+	}
 }, { versionKey: false, timestamps: true });
 
 module.exports = model('sm_plus-devices', StellaPlusDevices);

@@ -28,5 +28,5 @@ const verifyToken = async (token, req, done) => {
 };
 
 passport.use('mirror', new BearerStrategy({ passReqToCallback: true }, (req, token, done) =>
-	verifyToken(token, req, done),
+	verifyToken(token, req, done)
 ));

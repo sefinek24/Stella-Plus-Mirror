@@ -9,5 +9,5 @@ module.exports = rateLimit({
 	skip: req => req.ip === '::ffff:127.0.0.1',
 
 	message: { success: false, status: 429, message: 'Too many requests. Please try again later.' },
-	statusCode: 429,
+	statusCode: 429
 });

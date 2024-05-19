@@ -57,7 +57,7 @@ module.exports = async (req, res, data = {}, deviceDb, subscriptionInfo) => {
 		newKey,
 		deleteBenefits: data.deleteBenefits,
 		deleteTokens: data.deleteTokens,
-		message,
+		message
 	};
 
 	res.status(status).send(responseObj);

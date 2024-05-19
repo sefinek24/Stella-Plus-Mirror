@@ -11,23 +11,23 @@ const StellaSubscription = new Schema({
 		trim: true,
 		match: [
 			/^([\w-.]+@([\w-]+\.)+[\w-]{2,4})?$/,
-			'Please fill a valid email address',
-		],
+			'Please fill a valid email address'
+		]
 	},
 	benefitId: {
 		type: Number,
 		required: true,
 		validate: {
 			validator: Number.isInteger,
-			message: '{VALUE} is not an integer',
-		},
+			message: '{VALUE} is not an integer'
+		}
 	},
 	isActive: { type: Boolean, required: true, default: false },
 	subscriptionDate: { type: Date },
 	mirror: {
 		selectedServer: { type: Number, default: 0, required: true },
-		previousServer: { type: Number, default: null, required: true },
-	},
+		previousServer: { type: Number, default: null, required: true }
+	}
 }, { versionKey: false, timestamps: true });
 
 module.exports = model('sm_subscriptions', StellaSubscription);

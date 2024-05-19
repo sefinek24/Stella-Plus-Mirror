@@ -11,7 +11,7 @@ router.get('/benefits/stella-mod-plus/receive/:userId/:key/download', [
 	param('key')
 		.notEmpty()
 		.isString()
-		.isLength({ min: 256, max: 256 }),
+		.isLength({ min: 256, max: 256 })
 ], DownloadBenefitsController.download);
 
 module.exports = router;
