@@ -4,7 +4,6 @@ const sendValidationResult = require('./sendValidationResult.js');
 
 module.exports = async (req, res) => {
 	const authorizationHeader = req.headers.authorization;
-
 	if (!authorizationHeader) {
 		await sendValidationResult(req, res, { status: 500, type: 'get-subs', app: 'smp-mirror', deleteBenefits: true, deleteTokens: true, message: 'Missing authorization header.' });
 		return { error: true };

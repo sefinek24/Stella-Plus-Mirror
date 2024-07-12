@@ -7,14 +7,17 @@ const passport = require('passport');
 require('./passport.js');
 const timeout = require('./middlewares/timeout.js');
 const logger = require('./middlewares/morgan.js');
+const { version } = require('./package.json');
 
 // Routes
 const Index = require('./routes/Index.js');
 const PatronCenter = require('./routes/PatronCenter.js');
 const API = require('./routes/v1.js');
 
-// MongoDB
-require('./database/mongoose.js');
+// Axios instance
+const axios = require('axios');
+axios.defaults.timeout = 14000;
+axios.defaults.headers.common['User-Agent'] = `Mozilla/5.0 (compatible; StellaMirror${process.env.MIRROR_ID}/${version}; +https://stella.sefinek.net)`;
 
 // Create express app
 const app = express();
@@ -43,7 +46,7 @@ app.listen(process.env.PORT, () => {
 		try {
 			process.send('ready');
 		} catch (err) {
-			// . . .
+			console.error('Error sending ready signal to parent process.', err.message);
 		}
 	}
 

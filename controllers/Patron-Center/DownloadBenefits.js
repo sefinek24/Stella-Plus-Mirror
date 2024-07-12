@@ -1,34 +1,42 @@
+const axios = require('axios');
 const fs = require('node:fs');
 const { validationResult } = require('express-validator');
+const generateSecret = require('../../utils/generateSecret.js');
 const sendResult = require('./scripts/sendResult.js');
 const determineZipPath = require('./scripts/determineZipPath.js');
-const StellaPlusDevices = require('../../database/models/StellaPlusDevices');
-const StellaSubscription = require('../../database/models/StellaSubscription');
 
 const prefix = '[DownloadBenefits]:';
 
-module.exports.download = async (req, res) => {
+exports.download = async (req, res) => {
 	try {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) throw { status: 400, message: errors.array() };
 
-		const webToken = req.params.key;
+		const { webToken } = req.params;
 		if (!webToken) throw { status: 400, message: 'Web token is invalid.' };
 
-		const db = await StellaPlusDevices.findOne({ devices: { $elemMatch: { 'secret.webToken': webToken } } });
-		if (!db) throw { status: 400, message: 'Device was not found.' };
+		const { userId } = req.params;
+		if (!userId) throw { status: 400, message: 'User ID is invalid.' };
 
-		const device = db.devices.find(doc => doc.secret.webToken === webToken);
+		// Secret key
+		const secret = generateSecret();
+
+		// Fetch device info from external API
+		const deviceResponse = await axios.get(`${process.env.EXTERNAL_API_URL}/spc/device`, { headers: { 'X-Web-Token': webToken, 'X-Secret-Key': secret } });
+		if (!deviceResponse.data) throw { status: 400, message: 'Device was not found.' };
+		const device = deviceResponse.data;
+
 		if (!device.status.active) throw { status: 403, message: 'This link is no longer active.' };
 
-		const userId = req.params.userId;
-		if (!userId) throw { status: 400, message: 'User ID is invalid.' };
 		if (!device.status.verified || !device.status.captcha) return res.status(307).redirect(`${process.env.PATRON_CENTER}/benefits/stella-mod-plus/receive/${userId}/${device.secret.webToken}/captcha`);
 		if (device.status.expired) throw { status: 410, message: 'This URL has expired and will never be active again.' };
 		if (device.status.received) throw { status: 403, message: 'Benefits were received.' };
 
-		const subsInfo = await StellaSubscription.findOne({ userId });
-		if (!subsInfo) throw { status: 405, message: 'Subscription data was not found.' };
+		// Fetch subscription info from external API
+		const subsResponse = await axios.get(`${process.env.EXTERNAL_API_URL}/spc/subscription`, { headers: { 'X-Web-Token': webToken, 'X-User-Id': userId, 'X-Secret-Key': secret } });
+		if (!subsResponse.data) throw { status: 405, message: 'Subscription data was not found.' };
+		const subsInfo = subsResponse.data;
+
 		if (!subsInfo.isActive) throw { status: 402, message: 'Subscription is not active.' };
 
 		// Check the mirror
@@ -41,13 +49,13 @@ module.exports.download = async (req, res) => {
 		if (!zipPath) throw { status: 500, message: `Unknown zip path (${zipPath}) for benefit id ${subsInfo.benefitId}` };
 		if (!fs.existsSync(zipPath)) throw { status: 500, message: 'File doesn\'t exist. Please report this error.' };
 
-		// Update the database
-		db.lastBenefitReceivedAt = Date.now();
-		const deviceToUpdate = db.devices.find(doc => doc.secret.webToken === webToken);
-		if (deviceToUpdate) deviceToUpdate.status.received = true;
-		deviceToUpdate.generatedKeyAt = Date.now();
+		// Update the device info via external API
+		await axios.post(`${process.env.EXTERNAL_API_URL}/spc/device/update`, {
+			webToken,
+			status: { received: true },
+			generatedKeyAt: new Date()
+		}, { headers: { 'X-Secret-Key': secret } });
 
-		await db.save({ validateModifiedOnly: true });
 
 		// Send file
 		res.download(zipPath);
@@ -55,7 +63,7 @@ module.exports.download = async (req, res) => {
 		// Final
 		console.log(prefix, `Successfully served zip file for ${subsInfo.email}`);
 	} catch (err) {
-		console.error(prefix, 'Failed to process download request.', err);
+		console.error(prefix, 'Failed to process download request.', err.response?.data || err.message);
 		sendResult(res, { status: err.status || 500, message: err.message || 'Internal server error' });
 	}
 };

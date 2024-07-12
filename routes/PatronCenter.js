@@ -3,12 +3,12 @@ const router = express.Router();
 const { param } = require('express-validator');
 const DownloadBenefitsController = require('../controllers/Patron-Center/DownloadBenefits.js');
 
-router.get('/benefits/stella-mod-plus/receive/:userId/:key/download', [
+router.get('/benefits/stella-mod-plus/receive/:userId/:webToken/download', [
 	param('userId')
 		.notEmpty()
 		.isString()
 		.isLength({ min: 64, max: 64 }),
-	param('key')
+	param('webToken')
 		.notEmpty()
 		.isString()
 		.isLength({ min: 256, max: 256 })

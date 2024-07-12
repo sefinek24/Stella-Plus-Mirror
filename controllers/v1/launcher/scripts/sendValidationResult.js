@@ -1,4 +1,5 @@
-const StellaPlusDevices = require('../../../../database/models/StellaPlusDevices');
+const axios = require('axios');
+const generateSecret = require('../../../../utils/generateSecret.js');
 
 const prefix = '[sendValidationResult]:';
 
@@ -9,28 +10,14 @@ const removeTokens = async deviceDb => {
 		return { deleted: false };
 	}
 
-	const webToken = secrets.webToken;
+	const { webToken } = secrets;
 	if (!webToken) {
 		console.warn(prefix, 'Tokens cannot be deleted [2]; `secrets.webToken` is unknown');
 		return { deleted: false };
 	}
 
 	try {
-		const db = await StellaPlusDevices.findOne({ devices: { $elemMatch: { 'secret.webToken': webToken } } });
-		db.devices.map(doc => {
-			if (doc.secret.webToken === webToken) {
-				doc.status.active = false;
-				doc.status.received = false;
-				doc.status.expired = false;
-				doc.status.captcha = false;
-				doc.status.verified = false;
-				doc.secret.accessToken = null;
-				doc.secret.verifyKey = null;
-				doc.secret.registryKey = null;
-			}
-		});
-
-		await db.save({ validateBeforeSave: false, isNew: false });
+		await axios.delete(`${process.env.EXTERNAL_API_URL}/validation/delete-tokens`, { headers: { 'X-Web-Token': webToken, 'X-Secret-Key': generateSecret() } });
 	} catch (err) {
 		console.error(err);
 		return { deleted: false };

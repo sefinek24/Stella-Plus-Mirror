@@ -1,9 +1,12 @@
-const StellaPlusDevices = require('../../../../database/models/StellaPlusDevices');
-const StellaSubscription = require('../../../../database/models/StellaSubscription');
+const axios = require('axios');
+const generateSecret = require('../../../../utils/generateSecret');
 
 module.exports = async userId => {
-	const deviceInfo = await StellaPlusDevices.findOne({ userId });
-	const subsData = await StellaSubscription.findOne({ userId });
-
-	return { deviceInfo, subsData };
+	try {
+		const res = await axios.get(`${process.env.EXTERNAL_API_URL}/launcher/data`, { headers: { 'X-User-Id': userId, 'X-Secret-Key': generateSecret() } });
+		return { subsData: res.data.user, deviceInfo: res.data.device };
+	} catch (err) {
+		console.error('Error fetching user and device information:', err.response?.data || err.message);
+		return { subsData: null, deviceInfo: null };
+	}
 };
