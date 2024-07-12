@@ -22,7 +22,7 @@ exports.download = async (req, res) => {
 		const secret = generateSecret();
 
 		// Fetch device info from external API
-		const deviceResponse = await axios.get(`${process.env.EXTERNAL_API_URL}/spc/device`, { headers: { 'X-Web-Token': webToken, 'X-Secret-Key': secret } });
+		const deviceResponse = await axios.get(`${process.env.STELLA_API}/spc/device`, { headers: { 'X-Web-Token': webToken, 'X-Secret-Key': secret } });
 		if (!deviceResponse.data) throw { status: 400, message: 'Device was not found.' };
 		const device = deviceResponse.data;
 
@@ -33,7 +33,7 @@ exports.download = async (req, res) => {
 		if (device.status.received) throw { status: 403, message: 'Benefits were received.' };
 
 		// Fetch subscription info from external API
-		const subsResponse = await axios.get(`${process.env.EXTERNAL_API_URL}/spc/subscription`, { headers: { 'X-Web-Token': webToken, 'X-User-Id': userId, 'X-Secret-Key': secret } });
+		const subsResponse = await axios.get(`${process.env.STELLA_API}/spc/subscription`, { headers: { 'X-Web-Token': webToken, 'X-User-Id': userId, 'X-Secret-Key': secret } });
 		if (!subsResponse.data) throw { status: 405, message: 'Subscription data was not found.' };
 		const subsInfo = subsResponse.data;
 
@@ -50,7 +50,7 @@ exports.download = async (req, res) => {
 		if (!fs.existsSync(zipPath)) throw { status: 500, message: 'File doesn\'t exist. Please report this error.' };
 
 		// Update the device info via external API
-		await axios.post(`${process.env.EXTERNAL_API_URL}/spc/device/update`, {
+		await axios.post(`${process.env.STELLA_API}/spc/device/update`, {
 			webToken,
 			status: { received: true },
 			generatedKeyAt: new Date()

@@ -17,7 +17,7 @@ const removeTokens = async deviceDb => {
 	}
 
 	try {
-		await axios.delete(`${process.env.EXTERNAL_API_URL}/validation/delete-tokens`, { headers: { 'X-Web-Token': webToken, 'X-Secret-Key': generateSecret() } });
+		await axios.delete(`${process.env.STELLA_API}/validation/delete-tokens`, { headers: { 'X-Web-Token': webToken, 'X-Secret-Key': generateSecret() } });
 	} catch (err) {
 		console.error(err);
 		return { deleted: false };
