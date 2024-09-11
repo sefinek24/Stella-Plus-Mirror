@@ -51,10 +51,9 @@ exports.download = async (req, res) => {
 
 		// Update the device info via external API
 		await axios.post(`${process.env.STELLA_API}/spc/device/update`, {
-			webToken,
 			status: { received: true },
 			generatedKeyAt: new Date()
-		}, { headers: { 'X-User-IP': req.ip, 'X-Secret-Key': secret } });
+		}, { headers: { 'X-User-IP': req.ip, 'X-Web-Token': webToken, 'X-Secret-Key': secret } });
 
 
 		// Send file
