@@ -53,9 +53,8 @@ exports.download = async (req, res) => {
 		await axios.post(`${process.env.STELLA_API}/spc/device/update`, {
 			webToken,
 			status: { received: true },
-			generatedKeyAt: new Date(),
-			userIp: req.ip
-		}, { headers: { 'X-Secret-Key': secret } });
+			generatedKeyAt: new Date()
+		}, { headers: { 'X-User-IP': req.ip, 'X-Secret-Key': secret } });
 
 
 		// Send file
