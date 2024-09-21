@@ -1,6 +1,6 @@
 {
   "name": "smp-mirror",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "This Node.js project is used for mirroring the benefits for Stella Mod Plus subscribers",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "axios": "^1.7.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.21.0",
+    "express": "^5.0.0",
     "express-rate-limit": "^7.4.0",
     "express-timeout-handler": "^2.2.2",
     "express-validator": "^7.2.0",
