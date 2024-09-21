@@ -1,4 +1,4 @@
-# Stella Mod Plus Mirrors
+# Stella Mod Plus Download Servers
 This Node.js project is used for mirroring benefits for [Stella Mod Plus](https://sefinek.net/genshin-impact-reshade/subscription) subscribers.
 
 ## License
