@@ -1,7 +1,6 @@
 require('dotenv').config();
 
 const express = require('express');
-const cors = require('cors');
 const helmet = require('helmet');
 const passport = require('passport');
 require('./passport.js');
@@ -26,7 +25,6 @@ const app = express();
 app.set('trust proxy', 1);
 
 // Middlewares
-app.use(cors());
 app.use(helmet());
 app.use(passport.initialize());
 app.use(timeout());
