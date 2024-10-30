@@ -10,7 +10,6 @@ const logger = require('./middlewares/morgan.js');
 const { version } = require('./package.json');
 
 // Routes
-const Index = require('./routes/Index.js');
 const PatronCenter = require('./routes/PatronCenter.js');
 const API = require('./routes/v1.js');
 
@@ -35,7 +34,7 @@ app.use(logger);
 
 
 // Routes
-app.use(Index);
+app.get('/', (req, res) => res.send(`<h1>Stella Mod - Mirror #${process.env.MIRROR_ID}</h1>`));
 app.use('/api/v1', PatronCenter);
 app.use('/api/v1', API);
 
