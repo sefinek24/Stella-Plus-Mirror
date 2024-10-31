@@ -9,12 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sefinek24/Stella-Plus-Mirror.git"
+    "url": "git+https://github.com/sefinek/Stella-Plus-Mirror.git"
   },
   "author": "Sefinek <contact@sefinek.net> (https://sefinek.net)",
   "license": "CC BY-NC-SA 4.0 DEED",
   "bugs": {
-    "url": "https://github.com/sefinek24/Stella-Plus-Mirror/issues"
+    "url": "https://github.com/sefinek/Stella-Plus-Mirror/issues"
   },
   "homepage": "https://patrons.sefinek.net",
   "dependencies": {
