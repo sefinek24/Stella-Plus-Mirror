@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { param } = require('express-validator');
-const DownloadBenefitsController = require('../controllers/Patron-Center/DownloadBenefits.js');
+const DownloadBenefitsController = require('../controllers/SPC/DownloadBenefits.js');
 
 router.get('/benefits/stella-mod-plus/receive/:userId/:webToken/download', [
 	param('userId')
@@ -11,7 +11,7 @@ router.get('/benefits/stella-mod-plus/receive/:userId/:webToken/download', [
 	param('webToken')
 		.notEmpty()
 		.isString()
-		.isLength({ min: 256, max: 256 })
+		.isLength({ min: 256, max: 256 }),
 ], DownloadBenefitsController.download);
 
 module.exports = router;

@@ -4,14 +4,15 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const passport = require('passport');
-require('./passport.js');
 const timeout = require('./middlewares/timeout.js');
 const logger = require('./middlewares/morgan.js');
 const { version } = require('./package.json');
+require('./passport.js');
 
 // Routes
-const PatronCenter = require('./routes/PatronCenter.js');
-const API = require('./routes/v1.js');
+const IndexRouter = require('./routes/Index.js');
+const SPCRouter = require('./routes/SPC.js');
+const APIRouter = require('./routes/v1.js');
 
 // Axios instance
 const axios = require('axios');
@@ -34,20 +35,11 @@ app.use(logger);
 
 
 // Routes
-app.get('/', (req, res) => res.send(`<h1>Stella Mod - Mirror #${process.env.MIRROR_ID}</h1>`));
-app.use('/api/v1', PatronCenter);
-app.use('/api/v1', API);
+app.use(IndexRouter);
+app.use('/api/v1', SPCRouter);
+app.use('/api/v1', APIRouter);
 
 
 // Run the server
-app.listen(process.env.PORT, () => {
-	if (process.env.NODE_ENV === 'production') {
-		try {
-			process.send('ready');
-		} catch (err) {
-			console.error('Error sending ready signal to parent process.', err.message);
-		}
-	}
-
-	console.log(`Mirror #${process.env.MIRROR_ID} is running on http://127.0.0.1:${process.env.PORT}`);
-});
+const port = process.env.PORT;
+app.listen(port, () => process.send ? process.send('ready') : console.log(`Server running at http://127.0.0.1:${port}`));

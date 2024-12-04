@@ -1,6 +1,6 @@
 const axios = require('axios');
-const fs = require('node:fs');
 const { validationResult } = require('express-validator');
+const fs = require('node:fs');
 const generateSecret = require('../../utils/generateSecret.js');
 const sendResult = require('./scripts/sendResult.js');
 const determineZipPath = require('./scripts/determineZipPath.js');
@@ -52,7 +52,7 @@ exports.download = async (req, res) => {
 		// Update the device info via external API
 		await axios.post(`${process.env.STELLA_API}/spc/device/update`, {
 			status: { received: true },
-			generatedKeyAt: new Date()
+			generatedKeyAt: new Date(),
 		}, { headers: { 'X-User-IP': req.ip, 'X-Web-Token': webToken, 'X-Secret-Key': secret } });
 
 
