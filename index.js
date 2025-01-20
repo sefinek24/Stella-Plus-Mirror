@@ -41,5 +41,5 @@ app.use('/api/v1', APIRouter);
 
 
 // Run the server
-const port = process.env.PORT;
-app.listen(port, () => process.send ? process.send('ready') : console.log(`Server running at http://127.0.0.1:${port}`));
+const { PORT } = process.env;
+app.listen(PORT, () => process.send ? process.send('ready') : console.log(`Server running at http://127.0.0.1:${PORT}`));
